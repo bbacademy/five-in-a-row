@@ -74,17 +74,17 @@ addEventListener('load', () => {
 		}
 		const x = Math.floor(e.layerX / grid)
 		const y = Math.floor(e.layerY / grid)
-		console.log(x)
+
 		if (game.move(x, y)) {
-			switch (game.playerID) {
+			const found = game.check()
+			switch (game.player.id) {
 				case 'A': drawCircle(x, y); break
 				case 'B': drawCross(x, y); break
 			}
-			const line = game.checkMove()
-			if (line) {
+			if (found) {
 				ended = true
-				drawLine(line);
-				console.log('PLAYER', game.playerID, 'won')
+				game.reset()
+				drawLine(found);
 			}
 		}
 	})
