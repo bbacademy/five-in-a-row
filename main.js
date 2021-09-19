@@ -1,7 +1,7 @@
 const game = new Game
-const rows = 12
-const cols = 20
 const grid = 40
+const rows = Math.floor(window.height / grid)
+const cols = Math.floor(window.width / grid)
 const ctx = board.getContext('2d')
 const w = board.width = cols * grid
 const h = board.height = rows * grid
