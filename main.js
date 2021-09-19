@@ -6,7 +6,7 @@ const ctx = board.getContext('2d')
 
 addEventListener('load', clearBoard)
 addEventListener('click', handleClick)
-addEventListener('resize', clearBoard)
+// addEventListener('resize', clearBoard)
 
 function handleClick(e) {
 	if (!e.target.matches('canvas')) return
