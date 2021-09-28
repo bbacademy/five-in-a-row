@@ -1,12 +1,28 @@
 
 const grid = 30
+const cols = 20
+const rows = 20
+const w = cols * grid + grid
+const h = rows * grid + grid
 const game = new Game
-const board = document.querySelector('canvas')
-const ctx = board.getContext('2d')
+const canvas = document.querySelector('canvas')
+const ctx = canvas.getContext('2d')
+
+let scaleX, scaleY
+
+canvas.width = w
+canvas.height = h
 
 addEventListener('load', clearBoard)
 addEventListener('click', handleClick)
-// addEventListener('resize', clearBoard)
+addEventListener('resize', handleResize)
+
+function handleResize() {
+	scaleX = window.innerWidth / w;
+	scaleY = window.innerHeight / h;
+	canvas.style.transformOrigin = `0 0`
+	canvas.style.transform = 'scale(' + Math.min(scaleX, scaleY) + ')'
+}
 
 function handleClick(e) {
 	if (!e.target.matches('canvas')) return
@@ -15,8 +31,8 @@ function handleClick(e) {
 		clearBoard()
 		return
 	}
-	const x = Math.floor(e.layerX / grid)
-	const y = Math.floor(e.layerY / grid)
+	const x = Math.floor(e.offsetX / grid)
+	const y = Math.floor(e.offsetY / grid)
 
 	if (game.move(x, y)) {
 		switch (game.player) {
@@ -27,20 +43,17 @@ function handleClick(e) {
 	}
 }
 function clearBoard() {
-	const rows = Math.floor(window.innerHeight / grid - 1)
-	const cols = Math.floor(window.innerWidth / grid - 1)
-	const w = board.width = cols * grid
-	const h = board.height = rows * grid
+	handleResize()
 	ctx.clearRect(0, 0, w, h)
 	ctx.strokeStyle = '#ddd'
 	ctx.lineWidth = 1
-	for (let c = 1; c < cols; c++) {
+	for (let c = 1; c <= cols; c++) {
 		ctx.beginPath()
 		ctx.moveTo(c * grid, 0)
 		ctx.lineTo(c * grid, h)
 		ctx.stroke()
 	}
-	for (let r = 1; r < rows; r++) {
+	for (let r = 1; r <= rows; r++) {
 		ctx.beginPath()
 		ctx.moveTo(0, r * grid)
 		ctx.lineTo(w, r * grid)
